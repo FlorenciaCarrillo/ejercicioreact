@@ -4,22 +4,23 @@ import { useState } from "react";
 
 const TextoMeme = (props) => {
 
-    const [textoMeme, setTextoMeme] = useState("");
-
-    const textoMemeOnChange = (e) => {
-        setTextoMeme(e.target.value);
+    const onTextoMemeChange = (index, texto) => {
+        props.onTextoMemeChange(index, texto);
     }
 
     useEffect(() => {
-        props.onTextoMemeChange(textoMeme)
-    }, [textoMeme])
+        document.getElementsByTagName("form")[0].reset();
+    }, [props.cantidadTextos])
 
     return (
         <div className="text-center">
-            <h1 className="mt-3 mb-3 text-center">Editá tu Meme</h1>
+            <h3 className="mt-3 mb-3 text-center">Ingresá los que llevará tu meme</h3>
 
-            <h3 className="mt-3 mb-3 text-center">Ingresá el texto que llevará tu meme</h3>
-            <input onChange={textoMemeOnChange} className="form-control w.50 m-auto d-block" type="text" placeholder="Frase del Meme" name="textoMeme" aria-aria-label="default input example" />
+            <form>
+                {Array.from(Array(props.cantidadTextos).keys()).map(i =>
+                    <input key={i} onChange={(e) => { onTextoMemeChange(i, e.target.value) }} className="form-control m-auto d-block mb-2" type="text" placeholder={`Texto n° ${i + 1}`} aria-aria-label="default input example" />
+                )}
+            </form>
 
         </div>
     );
